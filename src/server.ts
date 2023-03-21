@@ -1,15 +1,17 @@
 import express from 'express';
-import { baseConfiguration } from './config/baseConfig';
-import { connectDB } from './config/databaseConfig';
+import { baseConfiguration } from 'config/baseConfig';
+import { connectDB } from 'config/databaseConfig';
+import authRouter from 'routes/auth.route';
 
 //INITIALIZE VARIABLES
 const Server = express();
 
 //REGISTER MIDDLEWARES
 Server.use(express.json());
+// Server.use(cors);
 
 //REGISTER ROUTES
-Server.use('/api/v1/auth');
+Server.use('/api/v1/auth', authRouter);
 
 //INITIALIZE SERVER
 const initServer = () => {
@@ -22,7 +24,8 @@ const initServer = () => {
 			});
 		})
 		.catch((err) => {
-			initServer();
+			console.error(err);
+			// initServer(); //retry database connection once more
 		});
 };
 

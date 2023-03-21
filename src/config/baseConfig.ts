@@ -6,4 +6,5 @@ export const baseConfiguration = {
 	NODE_ENV: process.env.NODE_ENV,
 	SERVER_PORT: process.env.SERVER_PORT,
 	MONGO_URI: process.env.MONGO_URI,
+	HASH_SECRET: process.env.HASH_SECRET,
 };
