@@ -1,5 +1,6 @@
-import { baseConfiguration } from 'config/baseConfig';
+import { Request, Response, NextFunction, RequestHandler } from 'express';
 import crypto from 'node:crypto';
+import { baseConfiguration } from 'config/baseConfig';
 
 //Generate random strings for usage as a salt for hashing passwords
 export const randomSaltGenerator = () =>

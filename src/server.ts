@@ -2,12 +2,14 @@ import express from 'express';
 import { baseConfiguration } from 'config/baseConfig';
 import { connectDB } from 'config/databaseConfig';
 import authRouter from 'routes/auth.route';
+import { errorHandlerMiddleware } from 'middlewares/errorHandlerMiddleware';
 
 //INITIALIZE VARIABLES
 const Server = express();
 
 //REGISTER MIDDLEWARES
 Server.use(express.json());
+Server.use(errorHandlerMiddleware);
 // Server.use(cors);
 
 //REGISTER ROUTES
