@@ -1,19 +1,18 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { baseConfiguration } from 'config/baseConfig';
 import { connectDB } from 'config/databaseConfig';
-import authRouter from 'routes/auth.route';
 import { errorHandlerMiddleware } from 'middlewares/errorHandlerMiddleware';
+import mainRouter from 'routes/main.route';
 
 //INITIALIZE VARIABLES
 const Server = express();
 
 //REGISTER MIDDLEWARES
 Server.use(express.json());
-Server.use(errorHandlerMiddleware);
 // Server.use(cors);
 
 //REGISTER ROUTES
-Server.use('/api/v1/auth', authRouter);
+Server.use(mainRouter);
 
 //INITIALIZE SERVER
 const initServer = () => {
@@ -32,4 +31,10 @@ const initServer = () => {
 };
 
 //RUN SERVER
-initServer();
+// initServer();
+
+Server.use(errorHandlerMiddleware);
+
+Server.listen(baseConfiguration.SERVER_PORT, () => {
+	console.log(`Server started on port ${baseConfiguration.SERVER_PORT}`);
+});

@@ -1,27 +1,34 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import UserModerlHelpers from 'models/Users/user.helpers';
-import { hashPassword, randomSaltGenerator } from 'utils/index';
+import {
+	catchAsyncErrors,
+	CustomError,
+	hashPassword,
+	randomSaltGenerator,
+} from 'utils/index';
 
-const signup = async (req: Request, res: Response) => {
-	try {
-		const { username, email, password } = req.body;
+const signup = catchAsyncErrors(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const { email, password } = req.body;
 
 		//If any of the fields are missing
-		if (!email || !username || !password)
-			return res.status(400).json({
-				message: 'Missing data. Please provide all relevant fields!',
-			});
+		if (!email || !password)
+			return next(
+				new CustomError(
+					'Missing data, please provide all required fields',
+					400,
+				),
+			);
 
 		//Check is user email id already exists in the database
 		const existingUser = await UserModerlHelpers.getUserByEmail(email);
 		if (existingUser)
-			return res.status(400).json({ message: 'User already exists!' });
+			return next(new CustomError('User already exists!', 401));
 
 		//If user email does not exist then
 		const salt = randomSaltGenerator();
 		const newUser = await UserModerlHelpers.createUser({
 			email,
-			username,
 			authorization: {
 				salt,
 				password: hashPassword(salt, password),
@@ -29,13 +36,14 @@ const signup = async (req: Request, res: Response) => {
 		});
 
 		return res.status(201).json(newUser).end();
-	} catch (err) {
-		console.error(err);
-		return res.status(400);
-	}
-};
+	},
+);
 
-const signin = (req: Request, res: Response) => {};
+const signin = catchAsyncErrors(
+	async (req: Request, res: Response, next: NextFunction) => {
+		return next(new CustomError('BOOM', 401));
+	},
+);
 
 const signout = (req: Request, res: Response) => {};
 

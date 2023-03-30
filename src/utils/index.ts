@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction, RequestHandler } from 'express';
+import { Request, Response, NextFunction, Handler } from 'express';
 import crypto from 'node:crypto';
 import { baseConfiguration } from 'config/baseConfig';
 
@@ -13,4 +13,30 @@ export const hashPassword = (salt: string, password: string) => {
 		.update(baseConfiguration.HASH_SECRET as string)
 		.digest()
 		.toString();
+};
+
+export class CustomError extends Error {
+	public message: string;
+	public statusCode: number;
+	public status: string;
+	public isOperationalError: boolean;
+	constructor(message: string, statusCode: number) {
+		super(message);
+		this.message = message;
+		this.statusCode = statusCode;
+		this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
+		this.isOperationalError = true;
+
+		Error.captureStackTrace(this, this.constructor);
+	}
+}
+
+export const catchAsyncErrors = (handler: Handler) => {
+	return async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			await handler(req, res, next);
+		} catch (err) {
+			return next(err);
+		}
+	};
 };

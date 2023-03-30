@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 
 export interface UserModelInterface {
-	username: string;
 	email: string;
 	authorization: {
 		password: string;
@@ -12,10 +11,6 @@ export interface UserModelInterface {
 
 const UserSchema = new mongoose.Schema<UserModelInterface>(
 	{
-		username: {
-			type: String,
-			require: true,
-		},
 		email: {
 			type: String,
 			require: true,
