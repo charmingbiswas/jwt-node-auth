@@ -7,4 +7,6 @@ export const baseConfiguration = {
 	SERVER_PORT: process.env.SERVER_PORT,
 	MONGO_URI: process.env.MONGO_URI,
 	HASH_SECRET: process.env.HASH_SECRET,
+	JWT_SECRET: process.env.JWT_SECRET,
+	JWT_EXPIRY_TIME: process.env.JWT_EXPIRY_TIME,
 };

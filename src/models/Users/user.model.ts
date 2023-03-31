@@ -1,35 +1,33 @@
 import mongoose from 'mongoose';
 
 export interface UserModelInterface {
+	username?: string;
 	email: string;
-	authorization: {
-		password: string;
-		salt: string;
-		sessionToken?: string;
-	};
+	password: string;
+	salt: string;
 }
 
 const UserSchema = new mongoose.Schema<UserModelInterface>(
 	{
+		username: {
+			type: String,
+			required: false,
+			default: '',
+		},
 		email: {
 			type: String,
-			require: true,
+			required: true,
 			unique: true,
 		},
-		authorization: {
-			password: {
-				type: String,
-				required: true,
-				select: false,
-			},
-			salt: {
-				type: String,
-				select: false,
-			},
-			sessionToken: {
-				type: String,
-				select: false,
-			},
+		password: {
+			type: String,
+			required: true,
+			select: false,
+		},
+		salt: {
+			type: String,
+			required: true,
+			select: false,
 		},
 	},
 	{

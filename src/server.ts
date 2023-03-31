@@ -30,11 +30,11 @@ const initServer = () => {
 		});
 };
 
-//RUN SERVER
-// initServer();
-
 Server.use(errorHandlerMiddleware);
 
-Server.listen(baseConfiguration.SERVER_PORT, () => {
-	console.log(`Server started on port ${baseConfiguration.SERVER_PORT}`);
-});
+//RUN SERVER
+initServer();
+
+// Server.listen(baseConfiguration.SERVER_PORT, () => {
+// 	console.log(`Server started on port ${baseConfiguration.SERVER_PORT}`);
+// });
